@@ -6,11 +6,11 @@
 complete, tailored configuration for your specific project: CLAUDE.md, settings.json,
 skills, hooks, agents, and commands — all generated from your actual codebase.
 
-Every other setup resource is a guide you READ. This is a skill Claude EXECUTES.
+Every other setup resource is a guide you READ. This is a skill Claude EXECUTES — and safely re-executes.
 
 ## Install
 
-```bash
+```
 git clone https://github.com/Dragoon0x/useforgekit.git ~/.claude/skills/useforgekit
 ```
 
@@ -22,25 +22,36 @@ git clone https://github.com/Dragoon0x/useforgekit.git ~/.claude/skills/useforge
 
 Claude detects your stack, asks a few questions if needed, and generates everything.
 
+Run it again later — forge tracks what it wrote in a lockfile and surfaces a diff instead of clobbering your edits. See [RERUN-SEMANTICS](references/RERUN-SEMANTICS.md) for the full contract.
+
 ## What It Generates
 
 - **CLAUDE.md** — Project context, conventions, gotchas (< 200 lines, tailored to your stack)
 - **settings.json** — Permissions, hooks, model selection, thinking mode
+- **.forge.lock** — Tracks what forge wrote so rerun is safe (commit this)
 - **Skills** — Domain-specific knowledge for your frameworks and patterns
 - **Hooks** — Auto-format, branch protection, destructive command blocking
 - **Agents** — Code reviewer (read-only), test generator, doc writer
 - **Commands** — /fix-issue, /create-pr, /review, /deploy, /onboard
 
-## 48 Reference Modules
+## Modes
+
+- `/forge` — default, smart rerun with diff prompts on conflicts
+- `/forge --dry-run` — show every change, write nothing
+- `/forge --force` — regenerate everything (backs up first)
+- `/forge --audit` — read-only drift report
+
+## Reference Modules
 
 | Module | What It Covers |
-|--------|---------------|
+| --- | --- |
 | CLAUDE-MD.md | How to write CLAUDE.md: structure, sizing, anti-patterns, per-stack templates |
 | SETTINGS.md | Every settings.json field: permissions, hooks, model, tokens, effort |
 | SKILLS-ARCHITECTURE.md | Skill anatomy, frontmatter, progressive disclosure, categories |
 | HOOKS.md | All hook events, matchers, output protocol, per-language auto-formatters |
 | AGENTS.md | Agent anatomy, frontmatter, essential agents, Agent() invocation |
 | COMMANDS.md | Command anatomy, $ARGUMENTS, essential commands |
+| RERUN-SEMANTICS.md | Region markers, lockfile schema, rerun decision tree, audit mode |
 | DECISION-TREE.md | What goes in CLAUDE.md vs skill vs agent vs command vs hook vs rule |
 | CONTEXT-WINDOW.md | Token costs, budget management, compaction strategy |
 | ANTI-PATTERNS.md | 30 enumerated anti-patterns with symptoms and fixes |
